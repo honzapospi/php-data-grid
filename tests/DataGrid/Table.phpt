@@ -22,5 +22,6 @@ $table->columns = array(
 	'name' => 'First Name',
 	'surname' => 'SurName'
 );
+
 $table->setDataResource($simpleDataResource);
 \Tester\Assert::true($table->toString() instanceof \Nette\Utils\Html);

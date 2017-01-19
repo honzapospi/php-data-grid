@@ -19,6 +19,7 @@ require  __DIR__.'/../src/IRow.php';
 require  __DIR__.'/../src/DatabaseSelection.php';
 require  __DIR__.'/../src/RowPrototype.php';
 require  __DIR__.'/../src/Iterator.php';
+require  __DIR__.'/../src/DataList.php';
 
 // create temporary directory
 define('TEMP_DIR', __DIR__ . '/tmp/' . lcg_value());

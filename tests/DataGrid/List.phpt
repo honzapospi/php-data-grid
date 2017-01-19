@@ -26,5 +26,12 @@ $table->getRenderer()->getRowPrototype()->columnDecorator['name'] = function (\N
 	$td->setHtml($row['name']);
 };
 
+\Tester\Assert::type(\Nette\Utils\Html::class, $table->toString());
 
-$table->render();
+
+$list = new \JP\DataGrid\DataList();
+$list->addRow('Name', 'John', 'cool');
+$list->addRow('Surname', 'Person', 'man');
+
+
+\Tester\Assert::type(\Nette\Utils\Html::class, $list->toString());
