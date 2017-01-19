@@ -35,26 +35,28 @@ class DefaultRenderer extends \Nette\Object implements IRenderer {
 
 	public function toStringHeader(Table $table){
 		$container = Html::el('thead');
-		$tr = Html::el('tr');
-		if($this->rowPrototype->checkbox){
-			$td = Html::el('th');
-			$td->class = 'tbl-chbox';
-			$tr->addHtml($td);
+		if($table->renderHeader){
+			$tr = Html::el('tr');
+			if($this->rowPrototype->checkbox){
+				$td = Html::el('th');
+				$td->class = 'tbl-chbox';
+				$tr->addHtml($td);
+			}
+			foreach($table->columns as $htmlClass => $name){
+				$td = Html::el('th');
+				$td->class = $htmlClass;
+				if($name)
+					$td->setHtml($name);
+				$tr->addHtml($td);
+			}
+			if($this->rowPrototype->getButtons()){
+				$td = Html::el('th');
+				$td->class = 'tbl-buttons';
+				$td->setHtml($this->getRowPrototype()->buttonsTitle);
+				$tr->addHtml($td);
+			}
+			$container->addHtml($tr);
 		}
-		foreach($table->columns as $htmlClass => $name){
-			$td = Html::el('th');
-			$td->class = $htmlClass;
-			if($name)
-				$td->setHtml($name);
-			$tr->addHtml($td);
-		}
-		if($this->rowPrototype->getButtons()){
-			$td = Html::el('th');
-			$td->class = 'tbl-buttons';
-			$td->setHtml($this->getRowPrototype()->buttonsTitle);
-			$tr->addHtml($td);
-		}
-		$container->addHtml($tr);
 		return $container;
 	}
 

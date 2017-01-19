@@ -15,7 +15,7 @@ class Table extends \Nette\Object {
 	private $renderer;
 	private $page = 1;
 	private $itemsPerPage = 20;
-	private $rowControl;
+	public $renderHeader = true;
 
 	/**
 	 * @param IDataResource $dataResource
@@ -61,6 +61,8 @@ class Table extends \Nette\Object {
 	}
 
 	public function getRows(){
+		if(!$this->dataResource)
+			throw new \Exception('DataResource must be set to render table.');
 		return $this->dataResource->page($this->page, $this->itemsPerPage);
 	}
 

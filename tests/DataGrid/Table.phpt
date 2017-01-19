@@ -13,9 +13,10 @@ $simpleDataResource->addRowData(2, array(
 ));
 
 $table = new \JP\DataGrid\Table();
+
 \Tester\Assert::exception(function () use ($table){
 	$table->render();
-}, 'RuntimeException');
+}, 'Exception', 'DataResource must be set to render table.');
 
 $table->columns = array(
 	'name' => 'First Name',
