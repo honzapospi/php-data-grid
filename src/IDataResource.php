@@ -6,6 +6,7 @@
 
 namespace JP\DataGrid;
 
+
 /**
  * IDataResource
  * @author Jan Pospisil
@@ -13,6 +14,16 @@ namespace JP\DataGrid;
 
 interface IDataResource  {
 
+	/**
+	 * @param $page
+	 * @param $itemsPerPage
+	 * @return mixed
+	 */
 	public function page($page, $itemsPerPage);
+
+	/**
+	 * @return Paginator
+	 */
+	public function getPaginator();
 
 }

@@ -1,6 +1,8 @@
 <?php
 namespace JP\DataGrid;
+use Nette\Localization\ITranslator;
 use Nette\Utils\Html;
+use Tracy\Debugger;
 
 
 /**
@@ -12,18 +14,31 @@ use Nette\Utils\Html;
 class DefaultRenderer extends \Nette\Object implements IRenderer {
 
 	private $rowPrototype;
+	private $translator;
+	private $tableContainer;
+	public static $prevButtonName = 'Previous';
+	public static $nextButtonName = 'Next';
 
 	public function __construct(RowPrototype $rowPrototype) {
 		$this->rowPrototype = $rowPrototype;
+		$this->tableContainer = Html::el('table');
+		$this->tableContainer->class = 'list';
 	}
 
-	public function render(Table $table) {
-		echo $this->toString();
+	public function setTableContainer(Html $html){
+		$this->tableContainer = $html;
 	}
 
-	public function toString(Table $table) {
-		$container = Html::el('table');
-		$container->class = 'list';
+	public function setTranslator(ITranslator $translator){
+		$this->translator = $translator;
+	}
+
+	public function renderTable(Table $table) {
+		echo $this->toStringTable();
+	}
+
+	public function toStringTable(Table $table) {
+		$container = $this->tableContainer;
 		$header = $this->toStringHeader($table);
 		$body = $this->toStringBody($table);
 		$footer = $this->toStringFooter($table);
@@ -46,7 +61,7 @@ class DefaultRenderer extends \Nette\Object implements IRenderer {
 				$td = Html::el('th');
 				$td->class = $htmlClass;
 				if($name)
-					$td->setHtml($name);
+					$td->setHtml($this->translator ? $this->translator->translate($name) : $name);
 				$tr->addHtml($td);
 			}
 			if($this->rowPrototype->getButtons()){
@@ -90,13 +105,14 @@ class DefaultRenderer extends \Nette\Object implements IRenderer {
 			if(isset($this->rowPrototype->columnDecorator[$column]))
 				$this->rowPrototype->columnDecorator[$column]($td, $row, $iterator);
 			else
-				$td->setHtml($row[$column]);
+				$td->setHtml($this->translator ? $this->translator->translate($row[$column]) : $row[$column]);
 			$container->addHtml($td);
 		}
 		if($this->rowPrototype->getButtons()){
 			$buttonsContainer = Html::el('td');
 			foreach($this->rowPrototype->getButtons() as $buttonClosure){
 				$button = Html::el('a');
+				$button->setAttribute('class', 'btn-table');
 				$buttonClosure($button, $row, $iterator);
 				$buttonsContainer->addHtml($button);
 			}
@@ -114,4 +130,42 @@ class DefaultRenderer extends \Nette\Object implements IRenderer {
 		return $container;
 	}
 
+
+	public function toStringPaginator(Paginator $paginator, ILinkBuilder $linkBuilder) {
+		$container = Html::el('ul')->setAttribute('class', 'pagination');
+
+		// prev
+		$prevClass = 'paginate_button previous';
+		$prevLink = Html::el('a')->setHtml($this->translator ? $this->translator->translate(self::$prevButtonName) : self::$prevButtonName);
+		if($paginator->isFirst())
+			$prevClass.= ' disabled';
+		else
+			$prevLink->setAttribute('href', $linkBuilder->link($paginator->page - 1));
+		$prew = Html::el('li')->setAttribute('class', $prevClass);
+		$prew->addHtml($prevLink);
+		$container->addHtml($prew);
+
+		// pages
+		for($i = 1; $i <= $paginator->getLast(); $i++){
+			$itemClass = 'paginate_button';
+			if($paginator->page == $i)
+				$itemClass .= ' active';
+			$item = Html::el('li')->setAttribute('class', $itemClass);
+			$itemLink = Html::el('a')->setHtml($i)->setAttribute('href', $linkBuilder->link($i));
+			$item->addHtml($itemLink);
+			$container->addHtml($item);
+		}
+
+		// next
+		$nextClass = 'paginate_button next';
+		$nextLink = Html::el('a')->setHtml($this->translator ? $this->translator->translate(self::$nextButtonName) : self::$nextButtonName);
+		if($paginator->isLast())
+			$nextClass .= ' disabled';
+		else
+			$nextLink->setAttribute('href', $linkBuilder->link($paginator->page + 1));
+		$next = Html::el('li')->setAttribute('class', $nextClass);
+		$next->addHtml($nextLink);
+		$container->addHtml($next);
+		return $container;
+	}
 }

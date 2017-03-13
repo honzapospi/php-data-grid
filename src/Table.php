@@ -1,6 +1,6 @@
 <?php
-
 namespace JP\DataGrid;
+use Nette\Localization\ITranslator;
 
 /**
  * Table
@@ -10,18 +10,42 @@ namespace JP\DataGrid;
 
 class Table extends \Nette\Object {
 
+	/**
+	 * @var IDataResource $dataResource
+	 */
 	private $dataResource;
 	private $columns = array();
 	private $renderer;
 	private $page = 1;
 	private $itemsPerPage = 20;
 	public $renderHeader = true;
+	private $translator;
+	private $linkBuilder;
 
 	/**
 	 * @param IDataResource $dataResource
 	 */
 	public function setDataResource(IDataResource $dataResource){
 		$this->dataResource = $dataResource;
+	}
+
+	public function setLinkBuilder(ILinkBuilder $linkBuilder){
+		$this->linkBuilder = $linkBuilder;
+	}
+
+	public function setPage($page){
+		$this->page = $page;
+	}
+
+	/**
+	 * @return IDataResource
+	 */
+	public function getDataResource(){
+		return $this->dataResource;
+	}
+
+	public function setTranslator(ITranslator $translator){
+		$this->translator = $translator;
 	}
 
 	/**
@@ -48,8 +72,8 @@ class Table extends \Nette\Object {
 	/**
 	 * Render table
 	 */
-	public function render(){
-		echo $this->toString();
+	public function renderTable(){
+		echo $this->toStringTable();
 	}
 
 	public function setItemsPerPage($int){
@@ -69,18 +93,30 @@ class Table extends \Nette\Object {
 	/**
 	 * @return string
 	 */
-	public function toString(){
-		return $this->getRenderer()->toString($this);
+	public function toStringTable(){
+		return $this->getRenderer()->toStringTable($this);
 	}
 
 	public function getRenderer(){
-		if(!$this->renderer)
+		if(!$this->renderer){
 			$this->renderer = new DefaultRenderer(new RowPrototype());
+			if($this->translator)
+				$this->renderer->setTranslator($this->translator);
+		}
 		return $this->renderer;
 	}
 
 	public function getRowPrototype(){
 		return $this->getRenderer()->getRowPrototype();
+	}
+
+	public function renderPaginator(){
+		echo $this->toStringPaginator();
+	}
+
+	public function toStringPaginator(){
+		if($this->dataResource->getPaginator()->getPages() > 1)
+			return $this->getRenderer()->toStringPaginator($this->dataResource->getPaginator(), $this->linkBuilder);
 	}
 
 }
