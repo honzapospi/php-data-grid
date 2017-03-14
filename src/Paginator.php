@@ -20,7 +20,12 @@ class Paginator extends \Nette\Object {
 	}
 
 	public function getFrom(){
-		return (($this->page - 1) * $this->itemsPerPage) + 1;
+		$return = (($this->page - 1) * $this->itemsPerPage) + 1;
+		if($return > $this->getTotal()){
+			return $this->getTotal();
+		} else {
+			return $return;
+		}
 	}
 
 	public function getTo(){
