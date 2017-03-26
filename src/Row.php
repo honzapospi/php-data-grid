@@ -21,11 +21,8 @@ class Row extends \Nette\Object implements IRow, \ArrayAccess {
 	public function &__get($name) {
 		if($name == 'key')
 			return $this->key;
-		if(isset($this->data[$name])){
-			$return = $this->data[$name];
-			return $return;
-		}
-		throw new MemberAccessException('Value '.$name.' does not exist.');
+		$return = $this->data[$name];
+		return $return;
 	}
 
 	public function offsetExists($offset) {
