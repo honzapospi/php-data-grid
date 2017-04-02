@@ -27,6 +27,10 @@ class DataList extends \Nette\Object {
 		$this->resource->addRowData($this->counter, $data);
 	}
 
+	public function getTable(){
+		return $this->table;
+	}
+
 	public function toString(){
 		$this->table->renderHeader = FALSE;
 		$this->table->columns = $this->columns;
@@ -35,7 +39,7 @@ class DataList extends \Nette\Object {
 			$td->setName('th');
 			$td->setHtml($row[$first]);
 		};
-		return $this->table->toString();
+		return $this->table->toStringTable();
 	}
 
 	public function render(){
