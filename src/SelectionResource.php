@@ -21,9 +21,10 @@ class SelectionResource extends \Nette\Object implements IDataResource {
 	}
 
 	public function page($page, $itemsPerPage) {
+		$total = $this->selection->count();
 		$result = $this->selection->page($page, $itemsPerPage);
 		$return = new DatabaseSelection($result);
-		$this->paginator = new Paginator($page, $itemsPerPage, $result->count());
+		$this->paginator = new Paginator($page, $itemsPerPage, $total);
 		return $return;
 	}
 
