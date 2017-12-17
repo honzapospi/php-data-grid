@@ -40,7 +40,7 @@ class SimpleDataResource extends \Nette\Object implements IDataResource {
 	 */
 	public function getPaginator(){
 		if(!$this->paginator)
-			$this->paginator = new Paginator();
+			$this->paginator = new Paginator(1, 1000, 1000);
 		return $this->paginator;
 	}
 
