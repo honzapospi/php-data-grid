@@ -1,6 +1,7 @@
 <?php
 namespace JP\DataGrid;
 use Nette\Database\Table\Selection;
+use Nette\SmartObject;
 
 /**
  * Copyright (c) Jan Pospisil (http://www.jan-pospisil.cz)
@@ -8,7 +9,8 @@ use Nette\Database\Table\Selection;
  * @author Jan Pospisil
  */
 
-class SelectionResource extends \Nette\Object implements IDataResource {
+class SelectionResource implements IDataResource {
+	use SmartObject;
 
 	/**
 	 * @var Selection $selection

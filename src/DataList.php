@@ -2,13 +2,17 @@
 
 namespace JP\DataGrid;
 
+use Nette\SmartObject;
+
 /**
  * Copyright (c) Jan Pospisil (http://www.jan-pospisil.cz)
  * List
+ * @property Table $table
  * @author Jan Pospisil
  */
 
-class DataList extends \Nette\Object {
+class DataList  {
+	use SmartObject;
 
 	private $table;
 	private $resource;

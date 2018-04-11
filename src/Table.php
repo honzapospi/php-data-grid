@@ -1,6 +1,7 @@
 <?php
 namespace JP\DataGrid;
 use Nette\Localization\ITranslator;
+use Nette\SmartObject;
 
 /**
  * Table
@@ -8,7 +9,8 @@ use Nette\Localization\ITranslator;
  * @property array $columns
  */
 
-class Table extends \Nette\Object {
+class Table {
+	use SmartObject;
 
 	/**
 	 * @var IDataResource $dataResource

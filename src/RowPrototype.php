@@ -1,5 +1,6 @@
 <?php
 namespace JP\DataGrid;
+use Nette\SmartObject;
 
 /**
  * Copyright (c) Jan Pospisil (http://www.jan-pospisil.cz)
@@ -7,7 +8,8 @@ namespace JP\DataGrid;
  * @author Jan Pospisil
  */
 
-class RowPrototype extends \Nette\Object {
+class RowPrototype {
+	use SmartObject;
 
 	public $columnDecorator = array();
 	public $rowFormat;

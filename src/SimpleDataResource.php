@@ -5,13 +5,15 @@
  */
 
 namespace JP\DataGrid;
+use Nette\SmartObject;
 
 /**
  * SimpleDataResource
  * @author Jan Pospisil
  */
 
-class SimpleDataResource extends \Nette\Object implements IDataResource {
+class SimpleDataResource implements IDataResource {
+	use SmartObject;
 
 	private $data = array();
 	private $paginator;

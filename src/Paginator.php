@@ -1,13 +1,22 @@
 <?php
 namespace JP\DataGrid;
+use Nette\SmartObject;
 
 /**
  * Copyright (c) Jan Pospisil (http://www.jan-pospisil.cz)
  * Paginator
+ * @property-read int $from
+ * @property-read int $page
+ * @property-read int $to
+ * @property-read int $total
+ * @property-read int $pages
+ * @property-read int $last
+  *
  * @author Jan Pospisil
  */
 
-class Paginator extends \Nette\Object {
+class Paginator {
+	use SmartObject;
 
 	private $page;
 	private $itemsPerPage;

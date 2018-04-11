@@ -3,7 +3,7 @@ namespace JP\DataGrid;
 use Nette\Localization\ITranslator;
 use Nette\Utils\Html;
 use Tracy\Debugger;
-
+use Nette\SmartObject;
 
 /**
  * Copyright (c) Jan Pospisil (http://www.jan-pospisil.cz)
@@ -11,7 +11,8 @@ use Tracy\Debugger;
  * @author Jan Pospisil
  */
 
-class DefaultRenderer extends \Nette\Object implements IRenderer {
+class DefaultRenderer implements IRenderer {
+	use SmartObject;
 
 	private $rowPrototype;
 	private $translator;

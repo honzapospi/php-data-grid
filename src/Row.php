@@ -1,14 +1,15 @@
 <?php
 namespace JP\DataGrid;
 use Nette\MemberAccessException;
-
+use Nette\SmartObject;
 
 /**
  * Row
  * @author Jan Pospisil
  */
 
-class Row extends \Nette\Object implements IRow, \ArrayAccess {
+class Row implements IRow, \ArrayAccess {
+	use SmartObject;
 
 	private $data;
 	private $key;
